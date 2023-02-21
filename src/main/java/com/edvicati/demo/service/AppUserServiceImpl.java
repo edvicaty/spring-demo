@@ -16,8 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class AppUserServiceImpl implements AppUserService {
-    AppUserRepository appUserRepository;
-    RoleRepository roleRepository;
+    private final AppUserRepository appUserRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     public AppUser saveUser(AppUser user) {
