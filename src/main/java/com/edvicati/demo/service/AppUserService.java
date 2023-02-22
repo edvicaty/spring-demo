@@ -2,6 +2,7 @@ package com.edvicati.demo.service;
 
 import com.edvicati.demo.domain.AppUser;
 import com.edvicati.demo.domain.Role;
+import com.edvicati.demo.domain.RoleEnum;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface AppUserService {
 
     Role saveRole(Role role);
 
-    void addRoleToUser(String username, String roleName);
+    void addRoleToUser(String username, RoleEnum roleName);
 
     AppUser getUserByUsername(String username);
 

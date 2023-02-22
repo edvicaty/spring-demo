@@ -2,6 +2,7 @@ package com.edvicati.demo.service;
 
 import com.edvicati.demo.domain.AppUser;
 import com.edvicati.demo.domain.Role;
+import com.edvicati.demo.domain.RoleEnum;
 import com.edvicati.demo.repository.AppUserRepository;
 import com.edvicati.demo.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public void addRoleToUser(String username, String roleName) {
+    public void addRoleToUser(String username, RoleEnum roleName) {
         AppUser user = appUserRepository.findByUsername(username);
         Role role = roleRepository.findByName(roleName);
         log.info("Saving Role {} to User {}", role.getName(), user.getName());

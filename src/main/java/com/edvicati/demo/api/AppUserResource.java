@@ -2,6 +2,7 @@ package com.edvicati.demo.api;
 
 import com.edvicati.demo.domain.AppUser;
 import com.edvicati.demo.domain.Role;
+import com.edvicati.demo.domain.RoleEnum;
 import com.edvicati.demo.service.AppUserService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +53,6 @@ public class AppUserResource {
     @Setter
     class RoleToUserForm {
         private String username;
-        private String roleName;
+        private RoleEnum roleName;
     }
 }
