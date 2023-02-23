@@ -7,18 +7,41 @@ import com.edvicati.demo.repository.AppUserRepository;
 import com.edvicati.demo.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class AppUserServiceImpl implements AppUserService {
+public class AppUserServiceImpl implements AppUserService, UserDetailsService {
     private final AppUserRepository appUserRepository;
     private final RoleRepository roleRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        AppUser user = appUserRepository.findByUsername(username);
+        if (user == null) {
+            log.error("User not found in the database: {}", username);
+            throw new UsernameNotFoundException("User not found in the database " + username);
+        }
+        log.error("User found in the database: {}", username);
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        user.getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority(role.getName().toString()));
+        });
+        return new User(user.getUsername(), user.getPassword(), authorities);
+    }
 
     @Override
     public AppUser saveUser(AppUser user) {
@@ -52,4 +75,5 @@ public class AppUserServiceImpl implements AppUserService {
         log.info("Fetching all users");
         return appUserRepository.findAll();
     }
+
 }
