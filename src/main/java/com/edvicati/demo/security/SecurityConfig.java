@@ -1,6 +1,7 @@
 package com.edvicati.demo.security;
 
 import com.edvicati.demo.filter.CustomAuthenticationFilter;
+import com.edvicati.demo.filter.CustomAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static com.edvicati.demo.domain.RoleEnum.ROLE_ADMIN;
 import static com.edvicati.demo.domain.RoleEnum.ROLE_USER;
@@ -52,6 +54,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests().requestMatchers(POST, "/api/user/save/**").hasAnyAuthority(String.valueOf(ROLE_ADMIN));
         http.authorizeHttpRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
+        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
