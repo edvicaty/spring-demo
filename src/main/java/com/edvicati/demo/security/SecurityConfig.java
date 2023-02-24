@@ -49,7 +49,7 @@ public class SecurityConfig {
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeHttpRequests().requestMatchers("/api/login/**").permitAll();
+        http.authorizeHttpRequests().requestMatchers("/api/login/**", "/api/token/refresh/**").permitAll();
         http.authorizeHttpRequests().requestMatchers(GET, "/api/users/**").hasAnyAuthority(String.valueOf(ROLE_USER));
         http.authorizeHttpRequests().requestMatchers(POST, "/api/user/save/**").hasAnyAuthority(String.valueOf(ROLE_ADMIN));
         http.authorizeHttpRequests().anyRequest().authenticated();
